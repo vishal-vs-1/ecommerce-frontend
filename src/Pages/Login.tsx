@@ -12,6 +12,7 @@ const Login: React.FC = () => {
     password: '',
   });
 
+
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,8 +33,10 @@ const Login: React.FC = () => {
 
       // Redirect to the home page
       navigate('/');
+      window.location.reload();
     } catch (error) {
       console.error('Error during login:', error);
+      alert("invalid credentials")
       // handle error (e.g., show error message)
     }
   };

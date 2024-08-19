@@ -15,7 +15,7 @@ const Item: React.FC<ItemProps> = (props) => {
   return (
     <div className='item'>
       <Link to={`/product/${props.id}`}>
-        <img onClick={() => window.scrollTo(0, 0)} src={ require('../Assets/product_5.png')} alt="error" />
+        <img onClick={() => window.scrollTo(0, 0)} src={ require('../Assets/' + props.image)} alt="error" />
       </Link>
       <p>{props.name}</p>
       <div className="item-prices">

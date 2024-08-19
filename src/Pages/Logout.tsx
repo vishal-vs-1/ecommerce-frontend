@@ -17,6 +17,7 @@ const Logout: React.FC = () => {
 
     // Redirect the user to the login page
     navigate('/login');
+    window.location.reload();
   }, [navigate]);
 
   return (

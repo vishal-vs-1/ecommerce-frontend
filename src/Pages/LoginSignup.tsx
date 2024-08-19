@@ -1,8 +1,7 @@
-// src/components/LoginSignup.tsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom'; // Assuming you're using react-router for navigation
+import { useNavigate } from 'react-router-dom';
 import './CSS/LoginSignup.css';
 import { RegistrationRequest } from '../interfaces/RegistrationRequest';
 
@@ -11,32 +10,84 @@ const LoginSignup: React.FC = () => {
     name: '',
     email: '',
     password: '',
-    phoneNo: 0,
+    phoneNo: '',  // Treating phoneNo as a string for validation
   });
+
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const navigate = useNavigate();
 
+  const validateForm = () => {
+    const errors: { [key: string]: string } = {};
+
+    // Name validation: "FirstName LastName" format
+    const nameRegex = /^[A-Za-z]+ [A-Za-z]+$/;
+    if (!nameRegex.test(formData.name)) {
+      errors.name = "Name must be in 'FirstName LastName' format.";
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      errors.email = "Invalid email format.";
+    }
+
+    // Password length validation
+    if (formData.password.length < 8) {
+      errors.password = "Password must be at least 8 characters long.";
+    }
+
+    // Confirm password validation
+    if (formData.password !== confirmPassword) {
+      errors.confirmPassword = "Passwords do not match.";
+    }
+
+    // Phone number validation: must be 10 digits
+    const phoneNoRegex = /^\d{10}$/;
+    if (!phoneNoRegex.test(formData.phoneNo)) {
+      errors.phoneNo = "Phone number must be exactly 10 digits.";
+    }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    setErrors({});
     setFormData({
       ...formData,
-      [name]: name === 'phoneNo' ? Number(value) : value,
+      [name]: value,
     });
   };
 
+  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setConfirmPassword(e.target.value);
+  };
+
   const handleSubmit = async () => {
-    try {
-      const response = await axios.post('http://localhost:8080/register', formData);
-      const token = response.data;
+    if (validateForm()) {
+      try {
+        // Convert phoneNo to a number before sending
+        const finalData = {
+          ...formData,
+          phoneNo: Number(formData.phoneNo),  // Convert phoneNo to number
+        };
 
-      // Store the JWT token in a cookie
-      Cookies.set('jwt_token', token, { expires: 2 }); // Token expires in 7 days
+        const response = await axios.post('http://localhost:8080/register', finalData);
+        const token = response.data;
 
-      // Redirect to the home page
-      navigate('/');
-    } catch (error) {
-      console.error('Error during registration:', error);
-      // handle error (e.g., show error message)
+        // Store the JWT token in a cookie
+        Cookies.set('jwt_token', token, { expires: 2 });
+
+        // Redirect to the home page
+        navigate('/');
+        window.location.reload();
+      } catch (error) {
+        console.error('Error during registration:', error);
+        // handle error (e.g., show error message)
+      }
     }
   };
 
@@ -56,6 +107,8 @@ const LoginSignup: React.FC = () => {
             value={formData.name} 
             onChange={handleChange} 
           />
+          {errors.name && <p className="error">{errors.name}</p>}
+
           <input 
             type="email" 
             name="email" 
@@ -63,6 +116,8 @@ const LoginSignup: React.FC = () => {
             value={formData.email} 
             onChange={handleChange} 
           />
+          {errors.email && <p className="error">{errors.email}</p>}
+
           <input 
             type="password" 
             name="password" 
@@ -70,13 +125,25 @@ const LoginSignup: React.FC = () => {
             value={formData.password} 
             onChange={handleChange} 
           />
+          {errors.password && <p className="error">{errors.password}</p>}
+
           <input 
-            type="text" 
+            type="password" 
+            name="confirmPassword" 
+            placeholder="Confirm Password" 
+            value={confirmPassword} 
+            onChange={handleConfirmPasswordChange} 
+          />
+          {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
+
+          <input 
+            type="text"
             name="phoneNo" 
             placeholder="Phone Number" 
             value={formData.phoneNo} 
             onChange={handleChange} 
           />
+          {errors.phoneNo && <p className="error">{errors.phoneNo}</p>}
         </div>
         <button onClick={handleSubmit}>Continue</button>
         <p className="loginsignup-login">
