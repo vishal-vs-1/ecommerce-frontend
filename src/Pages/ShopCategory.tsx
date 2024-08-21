@@ -3,7 +3,6 @@ import axios from 'axios';
 import './CSS/ShopCategory.css';
 import Item from '../Components/Item/Item.tsx';
 import { ProductResponse } from '../interfaces/ProductResponse';
-import { json } from 'react-router-dom';
 
 interface ShopCategoryProps {
   category: string;
