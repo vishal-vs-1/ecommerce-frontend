@@ -5,5 +5,5 @@ export interface AddToCartRequest {
   productId: number;
   productName: string;
   quantity: number;
-  size: Size;
+  size: string;
 }

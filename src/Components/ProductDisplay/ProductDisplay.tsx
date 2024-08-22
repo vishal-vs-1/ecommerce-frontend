@@ -5,6 +5,8 @@ import star_icon from "../Assets/star_icon.png";
 import star_dull_icon from "../Assets/star_dull_icon.png";
 import { ProductResponse, Size } from '../../interfaces/ProductResponse';
 import { AddToCartRequest } from '../../interfaces/AddToCartRequest';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 interface ProductDisplayProps {
   product: ProductResponse;
@@ -12,6 +14,7 @@ interface ProductDisplayProps {
 
 const ProductDisplay: React.FC<ProductDisplayProps> = ({ product }) => {
   const [selectedSize, setSelectedSize] = useState<Size | null>(null);
+  const navigate = useNavigate(); // To handle navigation programmatically
 
   // Transform arrays if they are in simple form (strings) rather than objects
   const sizes = Array.isArray(product.sizes) && typeof product.sizes[0] === 'string' 
@@ -31,9 +34,14 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ product }) => {
   };
 
   const handleAddToCart = async () => {
-    
     if (!selectedSize) {
       alert("Please select a size before adding to cart.");
+      return;
+    }
+
+    const token = Cookies.get('jwt_token');
+    if (!token) {
+      navigate('/login'); // Redirect to login if token is not present
       return;
     }
 
@@ -41,11 +49,19 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ product }) => {
       productId: product.productId,
       productName: product.productName,
       quantity: 1,
-      size: selectedSize,
+      size: selectedSize.sizeName,
     };
 
     try {
-      const response = await axios.post('http://localhost:8080/add/cart', addToCartRequest);
+      const response = await axios.post(
+        'http://localhost:8080/add/cart',
+        addToCartRequest,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+          },
+        }
+      );
       alert(response.data);
     } catch (error) {
       console.error("Error adding product to cart:", error);
