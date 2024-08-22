@@ -1,29 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import './ProductDisplay.css';
 import star_icon from "../Assets/star_icon.png";
 import star_dull_icon from "../Assets/star_dull_icon.png";
-import { ProductResponse } from '../../interfaces/ProductResponse';
+import { ProductResponse, Size } from '../../interfaces/ProductResponse';
+import { AddToCartRequest } from '../../interfaces/AddToCartRequest';
 
 interface ProductDisplayProps {
   product: ProductResponse;
 }
 
 const ProductDisplay: React.FC<ProductDisplayProps> = ({ product }) => {
-  // Transforming the data to match the expected structure
-  const sizes = product.sizes.map((sizeName, index) => ({
-    sizeId: index,
-    sizeName: sizeName as unknown as string, // Ensure type compatibility
-  }));
+  const [selectedSize, setSelectedSize] = useState<Size | null>(null);
 
-  const categories = product.categories.map((categoryName, index) => ({
-    categoryId: index,
-    categoryName: categoryName as unknown as string,
-  }));
+  // Transform arrays if they are in simple form (strings) rather than objects
+  const sizes = Array.isArray(product.sizes) && typeof product.sizes[0] === 'string' 
+    ? product.sizes.map((sizeName, index) => ({ sizeId: index, sizeName: sizeName as string }))
+    : product.sizes;
 
-  const tags = product.tags.map((tagName, index) => ({
-    tagId: index,
-    tagName: tagName as unknown as string,
-  }));
+  const categories = Array.isArray(product.categories) && typeof product.categories[0] === 'string' 
+    ? product.categories.map((categoryName, index) => ({ categoryId: index, categoryName: categoryName as string }))
+    : product.categories;
+
+  const tags = Array.isArray(product.tags) && typeof product.tags[0] === 'string' 
+    ? product.tags.map((tagName, index) => ({ tagId: index, tagName: tagName as string }))
+    : product.tags;
+
+  const handleSizeClick = (size: Size) => {
+    setSelectedSize(size);
+  };
+
+  const handleAddToCart = async () => {
+    
+    if (!selectedSize) {
+      alert("Please select a size before adding to cart.");
+      return;
+    }
+
+    const addToCartRequest: AddToCartRequest = {
+      productId: product.productId,
+      productName: product.productName,
+      quantity: 1,
+      size: selectedSize,
+    };
+
+    try {
+      const response = await axios.post('http://localhost:8080/add/cart', addToCartRequest);
+      alert(response.data);
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+      alert("Failed to add product to cart. Please try again.");
+    }
+  };
 
   return (
     <div className='productdisplay'>
@@ -31,15 +59,15 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ product }) => {
         <div className="productdisplay-img-list">
           {product.imageUrl && (
             <>
-              <img src={require('../Assets/' +  product.imageUrl)} alt="" />
-              <img src={require('../Assets/' +  product.imageUrl)} alt="" />
-              <img src={require('../Assets/' +  product.imageUrl)} alt="" />
-              <img src={require('../Assets/' +  product.imageUrl)} alt="" />
+              <img src={require('../Assets/' + product.imageUrl)} alt={product.productName} />
+              <img src={require('../Assets/' + product.imageUrl)} alt={product.productName} />
+              <img src={require('../Assets/' + product.imageUrl)} alt={product.productName} />
+              <img src={require('../Assets/' + product.imageUrl)} alt={product.productName} />
             </>
           )}
         </div>
         <div className="productdisplay-img">
-          <img className='productdisplay-main-img' src={require('../Assets/' +  product.imageUrl)} alt={product.productName} />
+          <img className='productdisplay-main-img' src={require('../Assets/' + product.imageUrl)} alt={product.productName} />
         </div>
       </div>
       <div className="productdisplay-right">
@@ -63,11 +91,17 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ product }) => {
           <h1>Select Size</h1>
           <div className="productdisplay-right-sizes">
             {sizes.map(size => (
-              <div key={size.sizeId}>{size.sizeName}</div>
+              <div
+                key={size.sizeId}
+                className={`size-option ${selectedSize?.sizeId === size.sizeId ? 'selected' : ''}`}
+                onClick={() => handleSizeClick(size)}
+              >
+                {size.sizeName}
+              </div>
             ))}
           </div>
         </div>
-        <button onClick={() => { /* Add to cart functionality */ }}>ADD TO CART</button>
+        <button onClick={handleAddToCart}>ADD TO CART</button>
         <p className='productdisplay-right-category'>
           <span>Category: </span>
           {categories.map(category => category.categoryName).join(', ')}
@@ -79,6 +113,6 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ product }) => {
       </div>
     </div>
   );
-}
+};
 
 export default ProductDisplay;
