@@ -14,6 +14,9 @@ import PublicRoute from './Components/Routes/PublicRoute.tsx';
 import men_banner from './Components/Assets/banner_mens.png'
 import women_banner from './Components/Assets/banner_women.png'
 import kid_banner from './Components/Assets/banner_kids.png'
+import Checkout from './Pages/Checkout.tsx';
+import About from './Pages/About.tsx';
+import Contact from './Pages/Contact.tsx';
 
 function App() {
   return (
@@ -28,6 +31,8 @@ function App() {
             <Route path="/product" element={<Product/>}>
               <Route path=":productId" element={<Product/>}/>
             </Route>
+            <Route path='/about' element={<About/>} />
+            <Route path='/contact' element={<Contact/>} />
 
           {/* Public routes */}
           <Route element={<PublicRoute />}>
@@ -39,6 +44,7 @@ function App() {
           <Route element={<PrivateRoute />}>                    
             <Route path="/cart" element={<Cart/>}/>
             <Route path="/logout" element={<Logout/>}/>
+            <Route path="/checkout" element={<Checkout/>}/>
           </Route>
         </Routes>
         <Footer/>

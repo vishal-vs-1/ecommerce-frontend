@@ -22,7 +22,12 @@
 }
 .carticon-product-icon{
     height: 55px;
+    
 }
+.carticon-product-icon:hover {
+    cursor: pointer; /* Change this to the desired cursor style */
+}
+
 .cartitems-remove-icon{
     width: 12px;
     margin: 0px 30px;

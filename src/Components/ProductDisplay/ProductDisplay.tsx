@@ -6,6 +6,7 @@ import star_dull_icon from "../Assets/star_dull_icon.png";
 import { ProductResponse, Size } from '../../interfaces/ProductResponse';
 import { AddToCartRequest } from '../../interfaces/AddToCartRequest';
 import Cookies from 'js-cookie';
+import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
 
 interface ProductDisplayProps {
@@ -35,7 +36,11 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ product }) => {
 
   const handleAddToCart = async () => {
     if (!selectedSize) {
-      alert("Please select a size before adding to cart.");
+      swal({
+        text : "Please select a size before adding to cart.",
+        timer : 1000
+      })
+      // alert("Please select a size before adding to cart.");
       return;
     }
 
@@ -62,7 +67,11 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ product }) => {
           },
         }
       );
-      alert(response.data);
+      // alert(response.data);
+      swal({
+        text : response.data,
+        timer : 500
+      })
     } catch (error) {
       console.error("Error adding product to cart:", error);
       alert("Failed to add product to cart. Please try again.");
@@ -99,9 +108,6 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ product }) => {
         <div className="productdisplay-right-prices">
           <div className="productdisplay-right-price-old">${product.cost}</div>
           <div className="productdisplay-right-price-new">${(product.cost * (1 - product.discount / 100)).toFixed(2)}</div>
-        </div>
-        <div className="productdisplay-right-description">
-          {product.description}
         </div>
         <div className="productdisplay-right-size">
           <h1>Select Size</h1>

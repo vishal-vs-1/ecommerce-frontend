@@ -1,0 +1,45 @@
+/* src/components/Checkout.css */
+.checkout {
+    padding: 20px;
+  }
+  
+  .checkout-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .checkout-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+  
+  .checkout-item-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+  
+  .checkout-summary {
+    text-align: center;
+  }
+  
+  .checkout-order-button,
+  .checkout-back-button {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .checkout-order-button:hover,
+  .checkout-back-button:hover {
+    background-color: #555;
+  }
+  
