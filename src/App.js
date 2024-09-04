@@ -17,6 +17,7 @@ import kid_banner from './Components/Assets/banner_kids.png'
 import Checkout from './Pages/Checkout.tsx';
 import About from './Pages/About.tsx';
 import Contact from './Pages/Contact.tsx';
+import DiscountedProducts from './Pages/DiscountedProducts.tsx';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="/product" element={<Product/>}>
               <Route path=":productId" element={<Product/>}/>
             </Route>
+            <Route path="/product/discount" element={<DiscountedProducts/>}></Route>
             <Route path='/about' element={<About/>} />
             <Route path='/contact' element={<Contact/>} />
 

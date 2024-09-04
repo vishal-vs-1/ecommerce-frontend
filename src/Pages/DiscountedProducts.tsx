@@ -3,24 +3,25 @@ import axios from 'axios';
 import './CSS/ShopCategory.css';
 import Item from '../Components/Item/Item.tsx';
 import { ProductResponse } from '../interfaces/ProductResponse';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-interface ShopCategoryProps {
+interface DiscountedProductsProps {
+  percent: number;
   category: string;
-  banner: string;
 }
 
-const ShopCategory: React.FC<ShopCategoryProps> = (props) => {
+const DiscountedProducts: React.FC<DiscountedProductsProps> = () => {
   const [products, setProducts] = useState<ProductResponse[]>([]);
   const [sortOrder, setSortOrder] = useState<string>('default');
   const [showSortOptions, setShowSortOptions] = useState<boolean>(false);
-  const navigate = useNavigate();
-
+  const location = useLocation();
+  const { percent, category } = location.state || { percent: 0, category: '' };
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get<ProductResponse[]>('http://localhost:8080/products', {
-          params: { category: props.category },
+        const c:number = percent; 
+        const response = await axios.get<ProductResponse[]>(`http://localhost:8080/products/discount/${c}`, {
+          params: { category: category },
         });
         setProducts(response.data);
       } catch (error) {
@@ -29,16 +30,7 @@ const ShopCategory: React.FC<ShopCategoryProps> = (props) => {
     };
 
     fetchProducts();
-  }, [props.category]);
-
-  const handleImageClick = () => {
-    navigate('/product/discount', {
-      state: {
-        percent: 50,
-        category: props.category,
-      },
-    });
-  };
+  }, [percent, category]);
 
   const handleSortChange = (order: string) => {
     setSortOrder(order);
@@ -59,7 +51,6 @@ const ShopCategory: React.FC<ShopCategoryProps> = (props) => {
 
   return (
     <div className='shop-category'>
-      <img className='shopcategory-banner' src={props.banner} onClick={handleImageClick} alt="" />
       <div className="shopcategory-indexSort">
         <p>
           <span>Showing 1-{products.length}</span> out of {products.length} products
@@ -96,4 +87,4 @@ const ShopCategory: React.FC<ShopCategoryProps> = (props) => {
   );
 }
 
-export default ShopCategory;
+export default DiscountedProducts;
