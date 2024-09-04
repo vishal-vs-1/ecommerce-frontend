@@ -23,6 +23,7 @@ const ShopCategory: React.FC<ShopCategoryProps> = (props) => {
           params: { category: props.category },
         });
         setProducts(response.data);
+        setSortOrder("order");
       } catch (error) {
         console.error('Error fetching products:', error);
       }
