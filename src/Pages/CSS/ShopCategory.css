@@ -68,3 +68,36 @@
         font-size: 13px;
     }
 }
+
+
+
+
+
+/* CSS/ShopCategory.css */
+
+.shopcategory-sort {
+    position: relative;
+    display: inline-block;
+    
+  }
+  
+  .shopcategory-sort-options {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ddd;
+    list-style-type: none;
+    padding: 0;
+    margin: 5px 0 0 0;
+    width: 150px;
+    z-index: 10;
+  }
+  
+  .shopcategory-sort-options li {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .shopcategory-sort-options li:hover {
+    background-color: #f0f0f0;
+  }
+  

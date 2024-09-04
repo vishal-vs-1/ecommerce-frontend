@@ -1,17 +1,15 @@
-// src/components/Login.tsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import './CSS/LoginSignup.css';  // Reuse the same CSS for styling
-import { AuthenticateRequest } from '../interfaces/AuthenticateRequest.ts';
+import { AuthenticateRequest } from '../interfaces/AuthenticateRequest';
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState<AuthenticateRequest>({
     email: '',
     password: '',
   });
-
 
   const navigate = useNavigate();
 
@@ -36,9 +34,14 @@ const Login: React.FC = () => {
       window.location.reload();
     } catch (error) {
       console.error('Error during login:', error);
-      alert("invalid credentials")
+      alert("Invalid credentials");
       // handle error (e.g., show error message)
     }
+  };
+
+  const handleGoogleLogin = () => {
+    // Redirect to Google OAuth2 authorization endpoint
+    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
   };
 
   return (
@@ -62,6 +65,9 @@ const Login: React.FC = () => {
           />
         </div>
         <button onClick={handleSubmit}>Login</button>
+        <button onClick={handleGoogleLogin} className="google-login-button">
+          Login with Google
+        </button>
         <p className="loginsignup-login">
           Don't have an account? 
           <button onClick={() => navigate('/signup')} className="login-link">

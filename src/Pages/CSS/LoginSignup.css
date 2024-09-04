@@ -1,3 +1,20 @@
+/* src/components/CSS/LoginSignup.css */
+.loginsignup-container .google-login-button {
+    margin-top: 15px;
+    padding: 10px;
+    width: 100%;
+    background-color: #4285F4;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+}
+.google-login-button:hover {
+    background-color: #357ae8;
+}
+
+
 .loginsignup{
     width: 100%;
     min-height: 90vh;

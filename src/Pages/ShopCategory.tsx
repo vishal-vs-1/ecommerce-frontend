@@ -11,6 +11,8 @@ interface ShopCategoryProps {
 
 const ShopCategory: React.FC<ShopCategoryProps> = (props) => {
   const [products, setProducts] = useState<ProductResponse[]>([]);
+  const [sortOrder, setSortOrder] = useState<string>('default');
+  const [showSortOptions, setShowSortOptions] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -18,7 +20,6 @@ const ShopCategory: React.FC<ShopCategoryProps> = (props) => {
         const response = await axios.get<ProductResponse[]>('http://localhost:8080/products', {
           params: { category: props.category },
         });
-        console.log(JSON.stringify(response.data))
         setProducts(response.data);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -28,6 +29,23 @@ const ShopCategory: React.FC<ShopCategoryProps> = (props) => {
     fetchProducts();
   }, [props.category]);
 
+  const handleSortChange = (order: string) => {
+    setSortOrder(order);
+    setShowSortOptions(false);
+  };
+
+  useEffect(() => {
+    if (sortOrder === 'asc') {
+      setProducts((prevProducts) =>
+        [...prevProducts].sort((a, b) => a.cost * (1 - a.discount / 100) - b.cost * (1 - b.discount / 100))
+      );
+    } else if (sortOrder === 'desc') {
+      setProducts((prevProducts) =>
+        [...prevProducts].sort((a, b) => b.cost * (1 - b.discount / 100) - a.cost * (1 - a.discount / 100))
+      );
+    }
+  }, [sortOrder]);
+
   return (
     <div className='shop-category'>
       <img className='shopcategory-banner' src={props.banner} alt="" />
@@ -36,7 +54,16 @@ const ShopCategory: React.FC<ShopCategoryProps> = (props) => {
           <span>Showing 1-{products.length}</span> out of {products.length} products
         </p>
         <div className="shopcategory-sort">
-          Sort by <img src='/path-to-your-assets/dropdown_icon.png' alt="" />
+          <div onClick={() => setShowSortOptions(!showSortOptions)}>
+            Sort by <img src='/path-to-your-assets/dropdown_icon.png' alt="" />
+          </div>
+          {showSortOptions && (
+            <ul className="shopcategory-sort-options">
+              <li onClick={() => handleSortChange('default')}>Default</li>
+              <li onClick={() => handleSortChange('asc')}>Price: Low to High</li>
+              <li onClick={() => handleSortChange('desc')}>Price: High to Low</li>
+            </ul>
+          )}
         </div>
       </div>
       <div className="shopcategory-products">
