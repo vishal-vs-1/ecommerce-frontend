@@ -9,7 +9,7 @@ const Checkout: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItemResponse[]>([]);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const navigate = useNavigate();
-
+  
   const fetchCartItems = async () => {
     const token = Cookies.get('jwt_token');
     if (!token) {
