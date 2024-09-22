@@ -12,6 +12,9 @@ interface ItemProps {
 }
 
 const Item: React.FC<ItemProps> = (props) => {
+
+  
+
   return (
     <div className='item'>
       <Link to={`/product/${props.id}`}>

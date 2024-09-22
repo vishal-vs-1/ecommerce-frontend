@@ -1,0 +1,126 @@
+.addproduct {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 800px;
+  padding: 40px 60px;
+  margin: 20px auto;
+  border-radius: 8px;
+  background: #f9f9f9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.addproduct-itemfield {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.addproduct-itemfield p {
+  margin-bottom: 8px;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.addproduct-itemfield input,
+.addproduct-itemfield select {
+  width: 100%;
+  height: 50px;
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  outline: none;
+  color: #555;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.addproduct-itemfield input:focus,
+.addproduct-itemfield select:focus {
+  border-color: #6079ff;
+}
+
+.addproduct-price {
+  display: flex;
+  gap: 20px;
+}
+
+.addproduct-price .addproduct-itemfield {
+  flex: 1;
+}
+
+.size-selector,
+.tag-selector,
+.category-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.size-selector label,
+.tag-selector label,
+.category-selector label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.addproduct-itemfield input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.addproduct-thumbnail-img {
+  height: 120px;
+  width: 120px;
+  border-radius: 8px;
+  object-fit: contain;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.addproduct-thumbnail-img:hover {
+  border-color: #6079ff;
+}
+
+.addproduct-btn {
+  display: inline-block;
+  margin-top: 30px;
+  width: 160px;
+  height: 50px;
+  border-radius: 6px;
+  background-color: #6079ff;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.addproduct-btn:hover {
+  background-color: #4a63d9;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 800px) {
+  .addproduct {
+    padding: 20px;
+  }
+
+  .addproduct-price {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .size-selector,
+  .tag-selector {
+    gap: 5px;
+  }
+
+  .addproduct-thumbnail-img {
+    height: 100px;
+    width: 100px;
+  }
+}

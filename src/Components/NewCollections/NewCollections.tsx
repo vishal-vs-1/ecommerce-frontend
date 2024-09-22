@@ -13,7 +13,6 @@ const NewCollections = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get<ProductResponse[]>('http://localhost:8080/products/nc');
-        console.log(JSON.stringify(response.data))
         setProducts(response.data);
       } catch (error) {
         console.error('Error fetching products:', error);
