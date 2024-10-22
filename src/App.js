@@ -5,6 +5,7 @@ import Shop from "./Pages/Shop";
 import ShopCategory from "./Pages/ShopCategory.tsx";
 import Product from "./Pages/Product.tsx";
 import Cart from "./Pages/Cart";
+import EditProducts from "./Pages/EditProducts.tsx";
 import LoginSignup from "./Pages/LoginSignup.tsx";
 import Login from "./Pages/Login.tsx";
 import Logout from "./Pages/Logout.tsx";
@@ -66,6 +67,7 @@ function App() {
           </Route>
           {/* Admin routes */}
           <Route element={<AdminRoute />}>
+            <Route path="/edit" element={<EditProducts />} />
             <Route path="/addproduct" element={<AddProduct />} />
           </Route>
         </Routes>
